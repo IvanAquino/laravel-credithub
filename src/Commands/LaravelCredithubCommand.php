@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace IvanAquino\LaravelCredithub\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LaravelCredithubCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-credithub';
 
     public $description = 'My command';
 
