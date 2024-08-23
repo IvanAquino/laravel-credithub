@@ -18,8 +18,7 @@ class LaravelCredithubServiceProvider extends PackageServiceProvider
         $package
             ->name('laravel-credithub')
             ->hasConfigFile()
-            ->hasViews()
-            ->hasMigration('create_laravel_credithub_table')
-            ->hasCommand(LaravelCredithubCommand::class);
+            ->hasMigration('create_credit_transaction_table');
+        // ->hasCommand(LaravelCredithubCommand::class);
     }
 }
