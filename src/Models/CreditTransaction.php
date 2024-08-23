@@ -23,7 +23,7 @@ class CreditTransaction extends Model
         return [
             'payload' => 'array',
             'amount' => 'integer',
-            'type' => config(''),
+            'type' => 'string',
         ];
     }
 
