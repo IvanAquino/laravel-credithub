@@ -23,7 +23,7 @@ class CreditTransaction extends Model
         return [
             'payload' => 'array',
             'amount' => 'integer',
-            'type' => 'string',
+            'type' => config('credithub.type_field', 'string'),
         ];
     }
 

@@ -27,34 +27,76 @@ composer require ivanaquino/laravel-credithub
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-credithub-migrations"
+php artisan vendor:publish --tag="credithub-migrations"
 php artisan migrate
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-credithub-config"
+php artisan vendor:publish --tag="credithub-config"
 ```
 
 This is the contents of the published config file:
 
 ```php
 return [
+    'type_field' => 'string',
 ];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="laravel-credithub-views"
 ```
 
 ## Usage
 
+You have to implement HasCredits contract in your model and use CreditTransactional trait.
+
 ```php
-$laravelCredithub = new IvanAquino\LaravelCredithub();
-echo $laravelCredithub->echoPhrase('Hello, IvanAquino!');
+// ...
+use IvanAquino\LaravelCredithub\Contracts\HasCredits;
+use IvanAquino\LaravelCredithub\Traits\CreditTransactional;
+
+class User extends Model implements HasCredits
+{
+    use CreditTransactional;
+}
+// ...
+```
+
+Now you can use the following methods:
+
+```php
+$user = User::find(1);
+# Add credits
+$user->addCredits(100);
+$user->addCredits(100, 'Bonus');
+$user->addCredits(100, 'Bonus', ['my_custom_field' => 'my_custom_value']);
+# Subtract credits
+$user->subtractCredits(100);
+$user->subtractCredits(100, 'Withdraw');
+$user->subtractCredits(100, 'Withdraw', ['my_custom_field' => 'my_custom_value']);
+# Transfer credits
+$user->transferCreditsTo(100, $anotherUser);
+$user->transferCreditsTo(100, $anotherUser, 'Transfer');
+$user->transferCreditsTo(100, $anotherUser, 'Transfer', ['my_custom_field' => 'my_custom_value']);
+
+# Get credits
+$user->credit_balance; // integer
+$user->has_credits; // true or false
+```
+
+You can cast type field of CreditTransaction model to whatever type you want, example:
+
+```php
+return [
+    'type_field' => \App\Enums\CreditTransactionType::class,
+];
+```
+
+```php
+use \App\Enums\CreditTransactionType;
+
+$user = User::find(1);
+# Add credits
+$user->addCredits(100, CreditTransactionType::BONUS);
 ```
 
 ## Testing
